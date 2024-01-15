@@ -57,6 +57,39 @@ function evaluate() {
     operator = null;
 }
 
+function addDigit(digit) {
+    if ((displayResult.textContent === '0' && displayHistory.textContent === '') || shouldClearDisplay) {
+        displayResult.textContent = '';
+        shouldClearDisplay = false;
+    }
+    displayResult.textContent += digit;
+}
+
+function addDecimal() {
+    if (!displayResult.textContent.includes('.')) {
+        if (shouldClearDisplay) {
+            displayResult.textContent = '0.';
+            shouldClearDisplay = false;
+        } else {
+            displayResult.textContent += '.';
+        }
+    }
+}
+
+function setOperator(op) {
+    if (operator) evaluate();
+    operand1 = Number(displayResult.textContent);
+    operator = op;
+    displayHistory.textContent = `${operand1} ${operator}`;
+    shouldClearDisplay = true;
+}
+
+function deleteDigit() {
+    if (shouldClearDisplay) return;
+    displayResult.textContent = displayResult.textContent.slice(0, -1);
+    if (displayResult.textContent === '') displayResult.textContent = '0';
+}
+
 let operand1 = null;
 let operand2 = null;
 let operator = null;
@@ -69,33 +102,36 @@ const displayHistory = document.querySelector('#display-history');
 
 buttons.addEventListener('click', function(e) {
     if (e.target.classList.contains('number')) {
-        if ((displayResult.textContent === '0' && displayHistory.textContent === '') || shouldClearDisplay) {
-            displayResult.textContent = '';
-            shouldClearDisplay = false;
-        }
-        displayResult.textContent += e.target.textContent;
+        addDigit(e.target.textContent);
     } else if (e.target.classList.contains('operator')) {
-        if (operator) evaluate();
-        operand1 = Number(displayResult.textContent);
-        operator = e.target.textContent;
-        displayHistory.textContent = `${operand1} ${operator}`;
-        shouldClearDisplay = true;
+        setOperator(e.target.textContent);
     } else if (e.target.id === 'equals') {
         evaluate();
     } else if (e.target.id === 'clear') {
         clear();
     } else if (e.target.id === 'backspace') {
-        if (shouldClearDisplay) return;
-        displayResult.textContent = displayResult.textContent.slice(0, -1);
-        if (displayResult.textContent === '') displayResult.textContent = '0';
+        deleteDigit();
     } else if (e.target.id === 'decimal') {
-        if (!displayResult.textContent.includes('.')) {
-            if (shouldClearDisplay) {
-                displayResult.textContent = '0.';
-                shouldClearDisplay = false;
-            } else {
-                displayResult.textContent += '.';
-            }
-        }
+        addDecimal();
+    }
+});
+
+// Hook up keyboard support
+addEventListener('keydown', function(e) {
+    if (e.key >= 0 && e.key <= 9) {
+        addDigit(e.key);
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        e.preventDefault();
+        setOperator(e.key === '*' ? 'x' : e.key === '/' ? '÷' : e.key);
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        evaluate();
+    } else if (e.key === 'Backspace') {
+        deleteDigit();
+    } else if (e.key === '.') {
+        addDecimal();
+    } else if (e.key === 'Escape') {
+        e.preventDefault();
+        clear();
     }
 });
