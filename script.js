@@ -15,17 +15,24 @@ function divide(operand1, operand2) {
 }
 
 function operate(operator, operand1, operand2) {
+    let result;
     switch (operator) {
         case '+':
-            return add(operand1, operand2);
+            result = add(operand1, operand2);
+            break;
         case '-':
-            return subtract(operand1, operand2);
+            result = subtract(operand1, operand2);
+            break;
         case '*':
         case 'x':
-            return multiply(operand1, operand2);
+            result = multiply(operand1, operand2);
+            break;
+        case '÷':
         case '/':
-            return divide(operand1, operand2);
+            result = divide(operand1, operand2);
+            break;
     }
+    return Number.isInteger(result) ? result : Number(result.toFixed(4));
 }
 
 function clear() {
