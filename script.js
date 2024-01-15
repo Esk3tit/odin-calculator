@@ -107,7 +107,7 @@ function negate() {
 function percent() {
     if (operand1 && operator) {
         let value = operand1 * (Number(displayResult.textContent) / 100);
-        displayResult.textContent = value;
+        displayResult.textContent = value.toFixed(4);
         shouldClearDisplay = true;
     }
 }
