@@ -50,6 +50,18 @@
     flex: 1;
 }
 
+.button.operator {
+    background-color: darkcyan;
+}
+
+#equals {
+    background-color: #ff5050;
+}
+
+#equals:hover {
+    background-color: maroon;
+}
+
 .button:hover {
     background-color: #ccc;
 }

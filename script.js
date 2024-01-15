@@ -23,12 +23,10 @@ function operate(operator, operand1, operand2) {
         case '-':
             result = subtract(operand1, operand2);
             break;
-        case '*':
         case 'x':
             result = multiply(operand1, operand2);
             break;
         case '÷':
-        case '/':
             result = divide(operand1, operand2);
             break;
     }
@@ -44,13 +42,16 @@ function clear() {
 }
 
 function evaluate() {
-    if (shouldClearDisplay) return;
     if (!operator) {
         displayHistory.textContent = `${displayResult.textContent} =`;
     } else {
         operand2 = Number(displayResult.textContent);
         displayHistory.textContent += ` ${operand2} =`;
-        displayResult.textContent = operate(operator, operand1, operand2);
+        if (operator === '÷' && operand2 === 0) {
+            displayResult.textContent = 'BRUH MOMENT';
+        } else {
+            displayResult.textContent = operate(operator, operand1, operand2);
+        }
     }
     shouldClearDisplay = true;
     operator = null;
@@ -83,5 +84,18 @@ buttons.addEventListener('click', function(e) {
         evaluate();
     } else if (e.target.id === 'clear') {
         clear();
+    } else if (e.target.id === 'backspace') {
+        if (shouldClearDisplay) return;
+        displayResult.textContent = displayResult.textContent.slice(0, -1);
+        if (displayResult.textContent === '') displayResult.textContent = '0';
+    } else if (e.target.id === 'decimal') {
+        if (!displayResult.textContent.includes('.')) {
+            if (shouldClearDisplay) {
+                displayResult.textContent = '0.';
+                shouldClearDisplay = false;
+            } else {
+                displayResult.textContent += '.';
+            }
+        }
     }
 });
