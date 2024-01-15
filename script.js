@@ -41,7 +41,8 @@ function clear() {
     operator = null;
 }
 
-function evaluate() {
+function evaluate(isOperator) {
+    if (shouldClearDisplay && isOperator) return;
     if (!operator) {
         displayHistory.textContent = `${displayResult.textContent} =`;
     } else {
@@ -77,7 +78,7 @@ function addDecimal() {
 }
 
 function setOperator(op) {
-    if (operator) evaluate();
+    if (operator) evaluate(true);
     operand1 = Number(displayResult.textContent);
     operator = op;
     displayHistory.textContent = `${operand1} ${operator}`;
@@ -106,7 +107,7 @@ buttons.addEventListener('click', function(e) {
     } else if (e.target.classList.contains('operator')) {
         setOperator(e.target.textContent);
     } else if (e.target.id === 'equals') {
-        evaluate();
+        evaluate(false);
     } else if (e.target.id === 'clear') {
         clear();
     } else if (e.target.id === 'backspace') {
@@ -125,7 +126,7 @@ addEventListener('keydown', function(e) {
         setOperator(e.key === '*' ? 'x' : e.key === '/' ? '÷' : e.key);
     } else if (e.key === 'Enter') {
         e.preventDefault();
-        evaluate();
+        evaluate(false);
     } else if (e.key === 'Backspace') {
         deleteDigit();
     } else if (e.key === '.') {

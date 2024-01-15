@@ -28,6 +28,11 @@
     height: 1.125rem;
 }
 
+body {
+    background-color: #f2f2f2;
+    font-family: 'Roboto', sans-serif;
+}
+
 .buttons {
     display: flex;
     justify-content: center;
