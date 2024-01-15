@@ -91,6 +91,15 @@ function deleteDigit() {
     if (displayResult.textContent === '') displayResult.textContent = '0';
 }
 
+function negate() {
+    let value = Number(displayResult.textContent);
+    if (value === 0) {
+        return;
+    } else {
+        displayResult.textContent = -value;
+    }
+}
+
 let operand1 = null;
 let operand2 = null;
 let operator = null;
@@ -114,6 +123,8 @@ buttons.addEventListener('click', function(e) {
         deleteDigit();
     } else if (e.target.id === 'decimal') {
         addDecimal();
+    } else if (e.target.id === 'negate') {
+        negate();
     }
 });
 
@@ -134,5 +145,8 @@ addEventListener('keydown', function(e) {
     } else if (e.key === 'Escape') {
         e.preventDefault();
         clear();
+    } else if (e.key === 'n') {
+        e.preventDefault();
+        negate();
     }
 });
