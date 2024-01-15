@@ -14,6 +14,10 @@ function divide(operand1, operand2) {
     return operand1 / operand2;
 }
 
+function percent(operand1, operand2) {
+    return operand1 * (operand2 / 100);
+}
+
 function operate(operator, operand1, operand2) {
     let result;
     switch (operator) {
@@ -100,6 +104,14 @@ function negate() {
     }
 }
 
+function percent() {
+    if (operand1 && operator) {
+        let value = operand1 * (Number(displayResult.textContent) / 100);
+        displayResult.textContent = value;
+        shouldClearDisplay = true;
+    }
+}
+
 let operand1 = null;
 let operand2 = null;
 let operator = null;
@@ -125,6 +137,8 @@ buttons.addEventListener('click', function(e) {
         addDecimal();
     } else if (e.target.id === 'negate') {
         negate();
+    } else if (e.target.id === 'percent') {
+        percent();
     }
 });
 
@@ -148,5 +162,8 @@ addEventListener('keydown', function(e) {
     } else if (e.key === 'n') {
         e.preventDefault();
         negate();
+    } else if (e.key === '%') {
+        e.preventDefault();
+        percent();
     }
 });
